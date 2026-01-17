@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-import './Login.css'; // This connects to the new attractive design
+import './Login.css'; 
+import API_URL from '../apiConfig'; // Import the config
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -11,8 +12,8 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            // Make request to your backend
-            const { data } = await axios.post('http://localhost:5000/api/auth/login', {
+            // UPDATED: Now uses the dynamic API_URL from apiConfig.js
+            const { data } = await axios.post(`${API_URL}/api/auth/login`, {
                 email,
                 password
             });
@@ -20,7 +21,7 @@ const Login = () => {
             // Save token to local storage
             localStorage.setItem('userInfo', JSON.stringify(data));
             
-            // Redirect to dashboard (Removed alert for smoother experience)
+            // Redirect to dashboard
             navigate('/');
         } catch (error) {
             alert(error.response?.data?.message || 'Login Failed');
@@ -35,7 +36,6 @@ const Login = () => {
             <div className="login-box">
                 <h2>Login</h2>
                 
-                {/* Form uses new CSS classes but keeps your logic */}
                 <form onSubmit={handleLogin}>
                     <div>
                         <label>Email</label>

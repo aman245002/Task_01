@@ -4,6 +4,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import TaskCard from '../components/TaskCard';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.css'; // Import the new Glassmorphism styles
+import API_URL from '../apiConfig'; // Import the config
 
 const Dashboard = () => {
     const [tasks, setTasks] = useState([]);
@@ -22,7 +23,8 @@ const Dashboard = () => {
 
     const fetchTasks = useCallback(async () => {
         try {
-            const { data } = await axios.get('http://localhost:5000/api/tasks', getAuthHeader());
+            // UPDATED: Now uses dynamic API_URL
+            const { data } = await axios.get(`${API_URL}/api/tasks`, getAuthHeader());
             setTasks(data);
         } catch (error) {
             console.error('Error fetching tasks:', error);
@@ -45,7 +47,8 @@ const Dashboard = () => {
     const handleAddTask = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:5000/api/tasks', newTask, getAuthHeader());
+            // UPDATED: Now uses dynamic API_URL
+            await axios.post(`${API_URL}/api/tasks`, newTask, getAuthHeader());
             setNewTask({ title: '', description: '', due_date: '' });
             fetchTasks();
         } catch (error) {
@@ -73,7 +76,8 @@ const Dashboard = () => {
                 [destination.droppableId]: { ...destColumn, items: destItems }
             });
 
-            await axios.put(`http://localhost:5000/api/tasks/${draggableId}`, { status: destination.droppableId }, getAuthHeader());
+            // UPDATED: Now uses dynamic API_URL
+            await axios.put(`${API_URL}/api/tasks/${draggableId}`, { status: destination.droppableId }, getAuthHeader());
         }
     };
 

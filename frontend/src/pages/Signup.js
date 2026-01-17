@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import './Login.css'; // Reusing the shared CSS for consistency
+import API_URL from '../apiConfig'; // Import the config
 
 const Signup = () => {
     const [name, setName] = useState('');
@@ -12,7 +13,8 @@ const Signup = () => {
     const handleSignup = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:5000/api/auth/register', {
+            // UPDATED: Now uses dynamic API_URL
+            await axios.post(`${API_URL}/api/auth/register`, {
                 name,
                 email,
                 password
