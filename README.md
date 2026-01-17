@@ -2,6 +2,9 @@
 
 A full-stack **Task Management Application** featuring a drag-and-drop Kanban board, user authentication, and profile management. Built using the MERN stack (MongoDB, Express, React, Node.js).
 
+## Deployed Link
+https://ujjwalguptabtech10861.netlify.app/login
+
 ## 🚀 Features
 
 * **Authentication:** User Sign Up, Login, and Logout (JWT-based).
@@ -40,7 +43,7 @@ A full-stack **Task Management Application** featuring a drag-and-drop Kanban bo
 ### 1. Clone the Repository
 ```bash
 git clone <repository_url>
-cd AmanKumarSharma_123456
+cd UjjwalGuptaFolder
 
 ### 2. Backend Setup
 Navigate to the backend folder and install dependencies:
