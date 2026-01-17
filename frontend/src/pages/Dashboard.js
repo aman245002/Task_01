@@ -3,6 +3,7 @@ import axios from 'axios';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import TaskCard from '../components/TaskCard';
 import { useNavigate } from 'react-router-dom';
+import './Dashboard.css'; // Import the new Glassmorphism styles
 
 const Dashboard = () => {
     const [tasks, setTasks] = useState([]);
@@ -14,13 +15,11 @@ const Dashboard = () => {
     });
     const navigate = useNavigate();
 
-    // Helper: Get Token
     const getAuthHeader = () => {
         const userInfo = JSON.parse(localStorage.getItem('userInfo'));
         return { headers: { Authorization: `Bearer ${userInfo?.token}` } };
     };
 
-    // 1. Fetch Tasks (Wrapped in useCallback to fix warning)
     const fetchTasks = useCallback(async () => {
         try {
             const { data } = await axios.get('http://localhost:5000/api/tasks', getAuthHeader());
@@ -31,12 +30,10 @@ const Dashboard = () => {
         }
     }, [navigate]);
 
-    // Initial Load
     useEffect(() => {
         fetchTasks();
     }, [fetchTasks]);
 
-    // 2. Sort Tasks into Columns
     useEffect(() => {
         setColumns({
             pending: { name: 'Pending', items: tasks.filter(t => t.status === 'pending') },
@@ -45,25 +42,22 @@ const Dashboard = () => {
         });
     }, [tasks]);
 
-    // 3. Handle Create Task
     const handleAddTask = async (e) => {
         e.preventDefault();
         try {
             await axios.post('http://localhost:5000/api/tasks', newTask, getAuthHeader());
-            setNewTask({ title: '', description: '', due_date: '' }); // Reset form
-            fetchTasks(); // Refresh board
+            setNewTask({ title: '', description: '', due_date: '' });
+            fetchTasks();
         } catch (error) {
             alert('Error creating task');
         }
     };
 
-    // 4. Handle Drag & Drop
     const onDragEnd = async (result) => {
         if (!result.destination) return;
         const { source, destination, draggableId } = result;
 
         if (source.droppableId !== destination.droppableId) {
-            // Optimistic Update
             const sourceColumn = columns[source.droppableId];
             const destColumn = columns[destination.droppableId];
             const sourceItems = [...sourceColumn.items];
@@ -79,21 +73,20 @@ const Dashboard = () => {
                 [destination.droppableId]: { ...destColumn, items: destItems }
             });
 
-            // API Call
             await axios.put(`http://localhost:5000/api/tasks/${draggableId}`, { status: destination.droppableId }, getAuthHeader());
         }
     };
 
     return (
-        <div style={{ minHeight: '100vh', padding: '20px', background: '#f4f5f7' }}>
+        <div className="dashboard-wrapper">
             
-            {/* --- HEADER SECTION (Profile & Logout) --- */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                <h1 style={{ margin: 0, color: '#333' }}>Task Board</h1>
+            {/* --- HEADER SECTION --- */}
+            <div className="dashboard-header">
+                <h1>Task Board</h1>
                 <div>
                     <button 
                         onClick={() => navigate('/profile')} 
-                        style={{ padding: '8px 16px', marginRight: '10px', background: '#28a745', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                        className="btn-glass btn-profile"
                     >
                         Profile
                     </button>
@@ -102,60 +95,54 @@ const Dashboard = () => {
                             localStorage.removeItem('userInfo');
                             navigate('/login');
                         }} 
-                        style={{ padding: '8px 16px', background: '#dc3545', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                        className="btn-glass btn-logout"
                     >
                         Logout
                     </button>
                 </div>
             </div>
 
-            {/* Add Task Form */}
-            <div style={{ marginBottom: '20px', background: 'white', padding: '15px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-                <h3 style={{ margin: '0 0 10px 0' }}>Create New Task</h3>
-                <form onSubmit={handleAddTask} style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+            {/* --- ADD TASK FORM --- */}
+            <div className="task-form-container">
+                <h3>Create New Task</h3>
+                <form onSubmit={handleAddTask} className="task-form">
                     <input 
+                        className="task-input"
                         placeholder="Task Title" 
                         value={newTask.title} 
                         onChange={(e) => setNewTask({...newTask, title: e.target.value})} 
                         required 
-                        style={{ padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
                     />
                     <input 
+                        className="task-input"
                         placeholder="Description" 
                         value={newTask.description} 
                         onChange={(e) => setNewTask({...newTask, description: e.target.value})} 
-                        style={{ padding: '8px', border: '1px solid #ddd', borderRadius: '4px', flexGrow: 1 }}
                     />
                     <input 
                         type="date" 
+                        className="task-input"
                         value={newTask.due_date} 
                         onChange={(e) => setNewTask({...newTask, due_date: e.target.value})} 
-                        style={{ padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
                     />
-                    <button type="submit" style={{ padding: '8px 16px', background: '#0079bf', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-                        Add Task
+                    <button type="submit" className="btn-add">
+                        + Add Task
                     </button>
                 </form>
             </div>
 
-            {/* Kanban Board */}
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap' }}>
+            {/* --- KANBAN BOARD --- */}
+            <div className="kanban-board">
                 <DragDropContext onDragEnd={onDragEnd}>
                     {Object.entries(columns).map(([columnId, column]) => (
-                        <div key={columnId} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                            <h2 style={{ fontSize: '18px', marginBottom: '10px', textTransform: 'capitalize' }}>{column.name}</h2>
+                        <div key={columnId} className="kanban-column">
+                            <h2>{column.name}</h2>
                             <Droppable droppableId={columnId}>
                                 {(provided, snapshot) => (
                                     <div
                                         {...provided.droppableProps}
                                         ref={provided.innerRef}
-                                        style={{
-                                            background: snapshot.isDraggingOver ? '#e6fcff' : '#ebecf0',
-                                            padding: '8px',
-                                            width: '280px',
-                                            minHeight: '500px',
-                                            borderRadius: '5px'
-                                        }}
+                                        className={`droppable-area ${snapshot.isDraggingOver ? 'dragging-over' : ''}`}
                                     >
                                         {column.items.map((item, index) => (
                                             <TaskCard key={item._id} task={item} index={index} />

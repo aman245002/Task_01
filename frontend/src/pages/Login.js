@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import './Login.css'; // This connects to the new attractive design
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -16,11 +17,10 @@ const Login = () => {
                 password
             });
 
-            // Save token to local storage (for keeping user logged in)
+            // Save token to local storage
             localStorage.setItem('userInfo', JSON.stringify(data));
             
-            alert('Login Successful!');
-            // Redirect to dashboard
+            // Redirect to dashboard (Removed alert for smoother experience)
             navigate('/');
         } catch (error) {
             alert(error.response?.data?.message || 'Login Failed');
@@ -28,29 +28,46 @@ const Login = () => {
     };
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '50px' }}>
-            <form onSubmit={handleLogin} style={{ width: '300px', padding: '20px', border: '1px solid #ccc', borderRadius: '5px' }}>
-                <h2 style={{ textAlign: 'center' }}>Login</h2>
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    style={{ width: '100%', marginBottom: '10px', padding: '8px', boxSizing: 'border-box' }}
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    style={{ width: '100%', marginBottom: '10px', padding: '8px', boxSizing: 'border-box' }}
-                />
-                <button type="submit" style={{ width: '100%', padding: '10px', background: '#007bff', color: 'white', border: 'none', cursor: 'pointer' }}>
-                    Login
-                </button>
-            </form>
+        <div className="login-wrapper">
+            {/* Dark overlay to make text pop against background */}
+            <div className="login-overlay"></div>
+            
+            <div className="login-box">
+                <h2>Login</h2>
+                
+                {/* Form uses new CSS classes but keeps your logic */}
+                <form onSubmit={handleLogin}>
+                    <div>
+                        <label>Email</label>
+                        <input
+                            type="email"
+                            placeholder="Enter your email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label>Password</label>
+                        <input
+                            type="password"
+                            placeholder="Enter your password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <button type="submit" className="login-btn">
+                        Login
+                    </button>
+                </form>
+
+                <div className="login-footer">
+                    <p>Don't have an account? <Link to="/signup">Sign Up</Link></p>
+                </div>
+            </div>
         </div>
     );
 };

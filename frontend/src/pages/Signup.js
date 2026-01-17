@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
+import './Login.css'; // Reusing the shared CSS for consistency
 
 const Signup = () => {
     const [name, setName] = useState('');
@@ -24,40 +25,60 @@ const Signup = () => {
     };
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '50px' }}>
-            <form onSubmit={handleSignup} style={{ width: '300px', padding: '20px', border: '1px solid #ccc', borderRadius: '5px' }}>
-                <h2 style={{ textAlign: 'center' }}>Sign Up</h2>
-                <input
-                    type="text"
-                    placeholder="Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                    style={{ width: '100%', marginBottom: '10px', padding: '8px', boxSizing: 'border-box' }}
-                />
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    style={{ width: '100%', marginBottom: '10px', padding: '8px', boxSizing: 'border-box' }}
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    style={{ width: '100%', marginBottom: '10px', padding: '8px', boxSizing: 'border-box' }}
-                />
-                <button type="submit" style={{ width: '100%', padding: '10px', background: '#28a745', color: 'white', border: 'none', cursor: 'pointer' }}>
-                    Register
-                </button>
-                <p style={{ marginTop: '10px', textAlign: 'center' }}>
-                    Already have an account? <Link to="/login">Login</Link>
-                </p>
-            </form>
+        // Overriding the background image inline to be different from Login
+        <div 
+            className="login-wrapper" 
+            style={{ backgroundImage: "url('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=2070&auto=format&fit=crop')" }}
+        >
+            <div className="login-overlay"></div>
+            
+            <div className="login-box">
+                <h2>Create Account</h2>
+                
+                <form onSubmit={handleSignup}>
+                    <div>
+                        <label>Full Name</label>
+                        <input
+                            type="text"
+                            placeholder="Enter your name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label>Email</label>
+                        <input
+                            type="email"
+                            placeholder="Enter your email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label>Password</label>
+                        <input
+                            type="password"
+                            placeholder="Choose a password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    {/* Using a Blue button for Signup to differentiate from Login's Green */}
+                    <button type="submit" className="login-btn" style={{ background: '#007bff' }}>
+                        Register
+                    </button>
+                </form>
+
+                <div className="login-footer">
+                    <p>Already have an account? <Link to="/login">Login</Link></p>
+                </div>
+            </div>
         </div>
     );
 };

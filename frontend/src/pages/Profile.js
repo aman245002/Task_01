@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './Login.css'; // Reusing the glass card styles
 
 const Profile = () => {
     const [name, setName] = useState('');
@@ -34,6 +35,7 @@ const Profile = () => {
             );
             localStorage.setItem('userInfo', JSON.stringify(data));
             alert('Profile Updated Successfully!');
+            setPassword(''); // Clear password field after update
         } catch (error) {
             alert('Update Failed');
         }
@@ -53,48 +55,70 @@ const Profile = () => {
     };
 
     return (
-        <div style={{ padding: '20px', maxWidth: '400px', margin: '0 auto' }}>
-            <h2>User Profile</h2>
-            <form onSubmit={handleUpdate} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                <label>Name</label>
-                <input 
-                    type="text" value={name} onChange={(e) => setName(e.target.value)} 
-                    style={{ padding: '8px' }} 
-                />
-                
-                <label>Email</label>
-                <input 
-                    type="email" value={email} onChange={(e) => setEmail(e.target.value)} 
-                    style={{ padding: '8px' }} 
-                />
-
-                <label>New Password (leave blank to keep current)</label>
-                <input 
-                    type="password" value={password} onChange={(e) => setPassword(e.target.value)} 
-                    placeholder="Enter new password"
-                    style={{ padding: '8px' }} 
-                />
-
-                <button type="submit" style={{ padding: '10px', background: '#007bff', color: 'white', border: 'none', cursor: 'pointer' }}>
-                    Update Profile
-                </button>
-            </form>
-
-            <hr style={{ margin: '20px 0' }} />
-
-            <button 
-                onClick={handleDelete} 
-                style={{ width: '100%', padding: '10px', background: 'red', color: 'white', border: 'none', cursor: 'pointer' }}
-            >
-                Delete Account
-            </button>
+        // UPDATED IMAGE URL BELOW
+        <div 
+            className="login-wrapper"
+            style={{ backgroundImage: "url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?auto=format&fit=crop&w=2070&q=80')" }}
+        >
+            <div className="login-overlay"></div>
             
-            <button 
-                onClick={() => navigate('/')} 
-                style={{ width: '100%', padding: '10px', marginTop: '10px', background: '#6c757d', color: 'white', border: 'none', cursor: 'pointer' }}
-            >
-                Back to Dashboard
-            </button>
+            <div className="login-box" style={{ maxWidth: '500px' }}>
+                <h2 style={{ marginBottom: '20px' }}>Edit Profile</h2>
+                
+                <form onSubmit={handleUpdate}>
+                    <div>
+                        <label>Full Name</label>
+                        <input 
+                            type="text" 
+                            value={name} 
+                            onChange={(e) => setName(e.target.value)} 
+                        />
+                    </div>
+                    
+                    <div>
+                        <label>Email Address</label>
+                        <input 
+                            type="email" 
+                            value={email} 
+                            onChange={(e) => setEmail(e.target.value)} 
+                        />
+                    </div>
+
+                    <div>
+                        <label>New Password <small>(Leave blank to keep current)</small></label>
+                        <input 
+                            type="password" 
+                            value={password} 
+                            onChange={(e) => setPassword(e.target.value)} 
+                            placeholder="Enter new password"
+                        />
+                    </div>
+
+                    <button type="submit" className="login-btn" style={{ background: '#28a745', marginBottom: '15px' }}>
+                        Save Changes
+                    </button>
+                </form>
+
+                <hr style={{ borderColor: 'rgba(255,255,255,0.2)', margin: '20px 0' }} />
+
+                <div style={{ display: 'flex', gap: '10px' }}>
+                    <button 
+                        onClick={() => navigate('/')} 
+                        className="login-btn" 
+                        style={{ background: 'rgba(255,255,255,0.2)', border: '1px solid rgba(255,255,255,0.4)' }}
+                    >
+                        Back
+                    </button>
+                    
+                    <button 
+                        onClick={handleDelete} 
+                        className="login-btn" 
+                        style={{ background: '#dc3545' }}
+                    >
+                        Delete Account
+                    </button>
+                </div>
+            </div>
         </div>
     );
 };
