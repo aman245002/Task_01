@@ -2,7 +2,7 @@
 
 A full-stack **Task Management Application** featuring a drag-and-drop Kanban board, user authentication, and profile management. Built using the MERN stack (MongoDB, Express, React, Node.js).
 
-## Ì∫Ä Features
+## üöÄ Features
 
 * **Authentication:** User Sign Up, Login, and Logout (JWT-based).
 * **Kanban Board:** Organize tasks into **Pending**, **In Progress**, and **Completed** columns.
@@ -12,7 +12,17 @@ A full-stack **Task Management Application** featuring a drag-and-drop Kanban bo
 * **Filtering:** API support for filtering tasks by status.
 * **Responsive UI:** Mobile-friendly design.
 
-## Ìª†Ô∏è Tech Stack
+## üì∏ Screenshots
+
+| Login Page | Signup Page |
+|:---:|:---:|
+| ![Login](./frontend/public/Login.jpeg) | ![Signup](./frontend/public/Signup.jpeg) |
+
+| Kanban Dashboard | User Profile |
+|:---:|:---:|
+| ![Dashboard](./frontend/public/Dashboard.jpeg) | ![Profile](./frontend/public/Profile.jpeg) |
+
+## üõ†Ô∏è Tech Stack
 
 * **Frontend:** React.js, React Router, React Beautiful DnD, Axios.
 * **Backend:** Node.js, Express.js.
@@ -31,7 +41,6 @@ A full-stack **Task Management Application** featuring a drag-and-drop Kanban bo
 ```bash
 git clone <repository_url>
 cd AmanKumarSharma_123456
-```
 
 ### 2. Backend Setup
 Navigate to the backend folder and install dependencies:
@@ -69,7 +78,7 @@ npm start
 
 ---
 
-## Ì¥ë Environment Variables
+## Environment Variables
 Refer to `.env.example` in the backend folder.
 
 | Variable | Description |
@@ -80,7 +89,7 @@ Refer to `.env.example` in the backend folder.
 
 ---
 
-## Ì≥° API Endpoints
+## API Endpoints
 
 ### Authentication
 * `POST /api/auth/register` - Register a new user
